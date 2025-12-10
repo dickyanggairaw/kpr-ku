@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi KPR</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Simulasi KPR</h1>
+
+        <div class="form-section">
+            <h2>Input Data KPR</h2>
+            <form id="kprForm">
+                <div class="form-group">
+                    <label for="hargaProperti">Harga Properti (Rp)</label>
+                    <input type="number" id="hargaProperti" required placeholder="500000000">
+                </div>
+
+                <div class="form-group">
+                    <label for="uangMuka">Uang Muka (Rp)</label>
+                    <input type="number" id="uangMuka" required placeholder="100000000">
+                </div>
+
+                <div class="form-group">
+                    <label for="jangkaWaktu">Jangka Waktu (Tahun)</label>
+                    <input type="number" id="jangkaWaktu" required placeholder="15" min="1" max="30">
+                </div>
+
+                <div class="form-group">
+                    <label for="jenisButnga">Jenis Bunga</label>
+                    <select id="jenisBunga" required>
+                        <option value="">Pilih Jenis Bunga</option>
+                        <option value="fix">Bunga Fix</option>
+                        <option value="berjenjang">Bunga Fix Berjenjang</option>
+                    </select>
+                </div>
+
+                <div id="bungaFixSection" class="bunga-section" style="display: none;">
+                    <div class="form-group">
+                        <label for="bungaFix">Bunga Fix (% per tahun)</label>
+                        <input type="number" id="bungaFix" step="0.01" placeholder="8.5">
+                    </div>
+                </div>
+
+                <div id="bungaBerjenjangSection" class="bunga-section" style="display: none;">
+                    <h3>Pengaturan Bunga Berjenjang</h3>
+                    <div id="berjenjangContainer">
+                        <div class="berjenjang-item">
+                            <div class="form-group">
+                                <label>Tahun Ke-</label>
+                                <input type="number" class="tahun-ke" min="1" placeholder="1-3" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Sampai Tahun Ke-</label>
+                                <input type="number" class="sampai-tahun" min="1" placeholder="3" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Bunga (% per tahun)</label>
+                                <input type="number" class="bunga-persen" step="0.01" placeholder="6.5" required>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="tambahBerjenjang" class="btn-secondary">+ Tambah Jenjang</button>
+                </div>
+
+                <button type="submit" class="btn-primary">Hitung KPR</button>
+            </form>
+        </div>
+
+        <div id="hasilSection" class="hasil-section" style="display: none;">
+            <h2>Hasil Simulasi</h2>
+            <div class="hasil-info">
+                <div class="info-item">
+                    <span class="label">Jumlah Pinjaman:</span>
+                    <span id="jumlahPinjaman" class="value">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Total Bunga:</span>
+                    <span id="totalBunga" class="value">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Total Pembayaran:</span>
+                    <span id="totalPembayaran" class="value">-</span>
+                </div>
+            </div>
+
+            <div class="tabel-angsuran">
+                <h3>Tabel Angsuran</h3>
+                <div class="table-container">
+                    <table id="tabelAngsuran">
+                        <thead>
+                            <tr>
+                                <th>Bulan</th>
+                                <th>Angsuran/Bulan</th>
+                                <th>Pokok</th>
+                                <th>Bunga</th>
+                                <th>Sisa Pinjaman</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Pelunasan -->
+    <div id="pelunasanModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Pelunasan</h2>
+            <div id="modalBody">
+                <div class="form-group">
+                    <label for="jenisPelunasan">Jenis Pelunasan</label>
+                    <select id="jenisPelunasan">
+                        <option value="sebagian">Pelunasan Sebagian</option>
+                        <option value="penuh">Pelunasan Penuh</option>
+                    </select>
+                </div>
+                <div id="jumlahPelunasanGroup" class="form-group">
+                    <label for="jumlahPelunasan">Jumlah Pelunasan (Rp)</label>
+                    <input type="number" id="jumlahPelunasan" placeholder="50000000">
+                </div>
+                <div class="info-item">
+                    <span class="label">Sisa Pinjaman Saat Ini:</span>
+                    <span id="sisaPinjamanModal" class="value">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Cicilan Saat Ini:</span>
+                    <span id="cicilanSekarangModal" class="value">-</span>
+                </div>
+                <div id="infoPelunasanResult" style="display: none; margin-top: 20px; padding: 15px; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #4caf50;">
+                    <h4 style="margin-bottom: 10px; color: #2e7d32;">Informasi Setelah Pelunasan:</h4>
+                    <div class="info-item" style="color: #333;">
+                        <span class="label">Cicilan Sebelumnya:</span>
+                        <span id="cicilanSebelum" class="value">-</span>
+                    </div>
+                    <div class="info-item" style="color: #333;">
+                        <span class="label">Cicilan Baru:</span>
+                        <span id="cicilanSesudah" class="value">-</span>
+                    </div>
+                    <div class="info-item" style="color: #333;">
+                        <span class="label">Selisih Cicilan:</span>
+                        <span id="selisihCicilan" class="value">-</span>
+                    </div>
+                    <div class="info-item" style="color: #333;">
+                        <span class="label">Proporsi Pokok Baru:</span>
+                        <span id="proporsiPokok" class="value">-</span>
+                    </div>
+                    <div class="info-item" style="color: #333;">
+                        <span class="label">Proporsi Bunga Baru:</span>
+                        <span id="proporsiBunga" class="value">-</span>
+                    </div>
+                </div>
+                <button id="btnProsesPelunasan" class="btn-primary">Proses Pelunasan</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
