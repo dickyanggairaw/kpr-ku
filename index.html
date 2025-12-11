@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulasi KPR</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <h1>Simulasi KPR</h1>
@@ -13,28 +15,31 @@
         <div class="form-section">
             <h2>Input Data KPR</h2>
             <form id="kprForm">
-                <div class="form-group">
-                    <label for="hargaProperti">Harga Properti (Rp)</label>
-                    <input type="number" id="hargaProperti" required placeholder="500000000">
-                </div>
+                <!-- Grid Layout untuk Input Utama -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="hargaProperti">Harga Properti</label>
+                        <input type="text" id="hargaProperti" required placeholder="500.000.000">
+                    </div>
 
-                <div class="form-group">
-                    <label for="uangMuka">Uang Muka (Rp)</label>
-                    <input type="number" id="uangMuka" required placeholder="100000000">
-                </div>
+                    <div class="form-group">
+                        <label for="uangMuka">Uang Muka</label>
+                        <input type="text" id="uangMuka" required placeholder="100.000.000">
+                    </div>
 
-                <div class="form-group">
-                    <label for="jangkaWaktu">Jangka Waktu (Tahun)</label>
-                    <input type="number" id="jangkaWaktu" required placeholder="15" min="1" max="30">
-                </div>
+                    <div class="form-group">
+                        <label for="jangkaWaktu">Jangka Waktu</label>
+                        <input type="number" id="jangkaWaktu" required placeholder="15 Tahun" min="1" max="30">
+                    </div>
 
-                <div class="form-group">
-                    <label for="jenisButnga">Jenis Bunga</label>
-                    <select id="jenisBunga" required>
-                        <option value="">Pilih Jenis Bunga</option>
-                        <option value="fix">Bunga Fix</option>
-                        <option value="berjenjang">Bunga Fix Berjenjang</option>
-                    </select>
+                    <div class="form-group">
+                        <label for="jenisBunga">Jenis Bunga</label>
+                        <select id="jenisBunga" required>
+                            <option value="">Pilih Jenis Bunga</option>
+                            <option value="fix">Bunga Fix</option>
+                            <option value="berjenjang">Bunga Fix Berjenjang</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div id="bungaFixSection" class="bunga-section" style="display: none;">
@@ -42,7 +47,25 @@
                         <label for="bungaFix">Bunga Fix (% per tahun)</label>
                         <input type="number" id="bungaFix" step="0.01" placeholder="8.5">
                     </div>
+                    <div class="form-group">
+                        <label for="periodeFix">Periode Bunga Fix (Tahun)</label>
+                        <input type="number" id="periodeFix" min="1"
+                            placeholder="Kosongkan jika fix untuk seluruh periode">
+                        <small style="color: #666; display: block; margin-top: 5px;">*Kosongkan jika bunga fix berlaku
+                            untuk seluruh periode pinjaman</small>
+                    </div>
+                    <div id="bungaFloatingSection"
+                        style="display: none; margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #2196f3;">
+                        <h4 style="color: #1976d2; margin-bottom: 15px;">Pengaturan Bunga Floating</h4>
+                        <div class="form-group">
+                            <label for="bungaFloating">Bunga Floating (% per tahun)</label>
+                            <input type="number" id="bungaFloating" step="0.01" placeholder="9.5">
+                            <small style="color: #666; display: block; margin-top: 5px;">*Bunga yang berlaku setelah
+                                periode fix berakhir</small>
+                        </div>
+                    </div>
                 </div>
+
 
                 <div id="bungaBerjenjangSection" class="bunga-section" style="display: none;">
                     <h3>Pengaturan Bunga Berjenjang</h3>
@@ -63,6 +86,17 @@
                         </div>
                     </div>
                     <button type="button" id="tambahBerjenjang" class="btn-secondary">+ Tambah Jenjang</button>
+
+                    <div id="bungaFloatingBerjenjangSection"
+                        style="display: none; margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #2196f3;">
+                        <h4 style="color: #1976d2; margin-bottom: 15px;">Bunga Floating Setelah Jenjang Terakhir</h4>
+                        <div class="form-group">
+                            <label for="bungaFloatingBerjenjang">Bunga Floating (% per tahun)</label>
+                            <input type="number" id="bungaFloatingBerjenjang" step="0.01" placeholder="9.5">
+                            <small style="color: #666; display: block; margin-top: 5px;">*Opsional: Bunga yang berlaku
+                                setelah jenjang terakhir berakhir</small>
+                        </div>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-primary">Hitung KPR</button>
@@ -70,19 +104,89 @@
         </div>
 
         <div id="hasilSection" class="hasil-section" style="display: none;">
-            <h2>Hasil Simulasi</h2>
-            <div class="hasil-info">
-                <div class="info-item">
-                    <span class="label">Jumlah Pinjaman:</span>
-                    <span id="jumlahPinjaman" class="value">-</span>
+            <h2>📊 Hasil Simulasi KPR</h2>
+
+            <!-- Ringkasan Utama -->
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 15px; margin-bottom: 25px; color: white; box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.85em; opacity: 0.9; margin-bottom: 5px;">💰 Cicilan per Bulan</div>
+                        <div id="cicilanPerBulan" style="font-size: 1.5em; font-weight: 700;">-</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.85em; opacity: 0.9; margin-bottom: 5px;">📅 Jangka Waktu</div>
+                        <div id="jangkaWaktuInfo" style="font-size: 1.5em; font-weight: 700;">-</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.85em; opacity: 0.9; margin-bottom: 5px;">📈 Bunga Efektif</div>
+                        <div id="bungaEfektif" style="font-size: 1.5em; font-weight: 700;">-</div>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <span class="label">Total Bunga:</span>
-                    <span id="totalBunga" class="value">-</span>
+            </div>
+
+            <!-- Detail Pinjaman -->
+            <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h3 style="color: #667eea; margin-bottom: 15px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">💳 Detail Pinjaman</h3>
+                <div class="hasil-info">
+                    <div class="info-item">
+                        <span class="label">Jumlah Pinjaman:</span>
+                        <span id="jumlahPinjaman" class="value">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Total Bunga:</span>
+                        <span id="totalBunga" class="value">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Rasio Bunga:</span>
+                        <span id="rasioBunga" class="value">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Total Pembayaran Awal:</span>
+                        <span id="totalPembayaranAwal" class="value">-</span>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <span class="label">Total Pembayaran:</span>
-                    <span id="totalPembayaran" class="value">-</span>
+            </div>
+
+            <!-- Detail Pelunasan (jika ada) -->
+            <div id="detailPelunasanSection" style="display: none; background: #f0f9ff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 5px solid #28a745;">
+                <h3 style="color: #28a745; margin-bottom: 15px; border-bottom: 2px solid #28a745; padding-bottom: 10px;">💵 Detail Pelunasan</h3>
+                <div class="hasil-info">
+                    <div class="info-item" id="totalPelunasanItem">
+                        <span class="label">Total Pelunasan:</span>
+                        <span id="totalPelunasanSebagian" class="value" style="color: #28a745; font-weight: 700;">-</span>
+                    </div>
+                    <div class="info-item" id="totalPembayaranAkhirItem">
+                        <span class="label">Total Pembayaran Akhir:</span>
+                        <span id="totalPembayaranAkhir" class="value">-</span>
+                    </div>
+                    <div class="info-item" id="pengheematanPembayaranItem">
+                        <span class="label">💰 Penghematan Pembayaran:</span>
+                        <span id="pengheematanPembayaran" class="value" style="color: #28a745; font-weight: 700; font-size: 1.1em;">-</span>
+                    </div>
+                    <div class="info-item" id="persentasePengheematanItem">
+                        <span class="label">Persentase Hemat:</span>
+                        <span id="persentasePenghematan" class="value" style="color: #28a745; font-weight: 700;">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Struktur Bunga -->
+            <div id="strukturBungaInfo" style="background: #fff8e1; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 5px solid #ffc107;">
+                <h4 style="color: #f57c00; margin-bottom: 10px;">📊 Struktur Bunga</h4>
+                <div id="strukturBungaDetail" style="font-size: 0.9em; color: #666;"></div>
+            </div>
+
+            <!-- Ringkasan Pelunasan -->
+            <div id="ringkasanPelunasan" style="display: none; margin-bottom: 30px;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 15px 15px 0 0; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);">
+                    <h3 style="color: white; margin: 0; font-size: 1.3em; display: flex; align-items: center; gap: 10px;">
+                        <span style="background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 8px;">📋</span>
+                        Riwayat Pelunasan
+                        <span style="background: rgba(255,255,255,0.3); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin-left: auto;" id="jumlahKaliPelunasan">0</span>
+                    </h3>
+                </div>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 0 0 15px 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <div id="listPelunasan"></div>
                 </div>
             </div>
 
@@ -123,7 +227,12 @@
                 </div>
                 <div id="jumlahPelunasanGroup" class="form-group">
                     <label for="jumlahPelunasan">Jumlah Pelunasan (Rp)</label>
-                    <input type="number" id="jumlahPelunasan" placeholder="50000000">
+                    <input type="text" id="jumlahPelunasan" placeholder="50.000.000">
+                </div>
+                <div class="form-group">
+                    <label for="tagAkuntansi">Tag Akuntansi (Opsional)</label>
+                    <input type="text" id="tagAkuntansi" placeholder="Contoh: THR 2024, Bonus Tahunan, dll">
+                    <small style="color: #666; display: block; margin-top: 5px;">*Untuk keperluan pencatatan/akuntansi</small>
                 </div>
                 <div class="info-item">
                     <span class="label">Sisa Pinjaman Saat Ini:</span>
@@ -133,7 +242,8 @@
                     <span class="label">Cicilan Saat Ini:</span>
                     <span id="cicilanSekarangModal" class="value">-</span>
                 </div>
-                <div id="infoPelunasanResult" style="display: none; margin-top: 20px; padding: 15px; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #4caf50;">
+                <div id="infoPelunasanResult"
+                    style="display: none; margin-top: 20px; padding: 15px; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #4caf50;">
                     <h4 style="margin-bottom: 10px; color: #2e7d32;">Informasi Setelah Pelunasan:</h4>
                     <div class="info-item" style="color: #333;">
                         <span class="label">Cicilan Sebelumnya:</span>
@@ -163,4 +273,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>
