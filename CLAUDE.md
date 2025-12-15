@@ -4,26 +4,37 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **KPR (Kredit Pemilikan Rumah / Home Mortgage) Simulation** web application built with vanilla HTML, CSS, and JavaScript. It calculates mortgage payments with various interest rate structures and supports prepayment scenarios.
+This is a **KPR (Kredit Pemilikan Rumah / Home Mortgage) Simulation** web application built with vanilla HTML, CSS, and JavaScript, powered by **Vite** for fast development and optimized production builds. It calculates mortgage payments with various interest rate structures and supports prepayment scenarios.
 
 ## Running the Application
 
-**No build process required.** Simply open `index.html` in a web browser.
+This project uses **Vite** as the build tool and dev server.
 
+### Development Mode
 ```bash
-# On macOS
-open index.html
+# Install dependencies first
+npm install
 
-# Or use a simple HTTP server
-python3 -m http.server 8000
-# Then visit http://localhost:8000
+# Run development server (opens automatically on http://localhost:3000)
+npm run dev
+```
+
+### Production Build
+```bash
+# Build for production
+npm run build
+
+# Preview production build locally
+npm run preview
 ```
 
 ## File Structure
 
 - **index.html** - Main HTML structure with form inputs and results display
 - **style.css** - All styling including responsive design and modal styles
-- **app.js** - Complete application logic (no modules or frameworks)
+- **app.js** - Complete application logic (vanilla JS, loaded as ES module)
+- **vite.config.js** - Vite configuration file
+- **package.json** - Project dependencies and scripts
 
 ## Architecture Overview
 
