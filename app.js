@@ -1,3 +1,6 @@
+// Import theme management module
+import { initTheme } from './theme.js';
+
 let dataAngsuran = [];
 let bulanDipilih = null;
 let riwayatPelunasan = [];
@@ -5,6 +8,9 @@ let bungaAsli = {}; // Menyimpan bunga asli untuk setiap bulan
 let totalPembayaranAwal = 0; // Total pembayaran sebelum pelunasan
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Initialize theme (dark/light mode)
+    initTheme();
+
     const jenisBungaSelect = document.getElementById('jenisBunga');
     const bungaFixSection = document.getElementById('bungaFixSection');
     const bungaBerjenjangSection = document.getElementById('bungaBerjenjangSection');
@@ -793,3 +799,6 @@ function formatAngkaInput(angka) {
 function parseAngkaInput(angkaStr) {
     return parseFloat(angkaStr.replace(/\./g, '')) || 0;
 }
+
+// Expose functions to global scope for inline event handlers (required for ES modules)
+window.bukaPelunasan = bukaPelunasan;

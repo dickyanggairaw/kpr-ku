@@ -4,15 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <title>Simulasi KPR</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Simulasi KPR</h1>
+    <!-- Theme Toggle Button -->
+    <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-icon">☀️</span>
+    </button>
 
-        <div class="form-section">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Simulasi KPR</h1>
+            <p class="hero-tagline">Hitung cicilan KPR Anda dengan mudah dan akurat</p>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section class="calculator-section">
+        <div class="container">
+            <div class="form-section">
             <h2>Input Data KPR</h2>
             <form id="kprForm">
                 <!-- Grid Layout untuk Input Utama -->
@@ -244,24 +258,24 @@
                 </div>
                 <div id="infoPelunasanResult"
                     style="display: none; margin-top: 20px; padding: 15px; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #4caf50;">
-                    <h4 style="margin-bottom: 10px; color: #2e7d32;">Informasi Setelah Pelunasan:</h4>
-                    <div class="info-item" style="color: #333;">
+                    <h4 style="margin-bottom: 10px; color: #1b5e20;">Informasi Setelah Pelunasan:</h4>
+                    <div class="info-item" style="color: #1b5e20;">
                         <span class="label">Cicilan Sebelumnya:</span>
                         <span id="cicilanSebelum" class="value">-</span>
                     </div>
-                    <div class="info-item" style="color: #333;">
+                    <div class="info-item" style="color: #1b5e20;">
                         <span class="label">Cicilan Baru:</span>
                         <span id="cicilanSesudah" class="value">-</span>
                     </div>
-                    <div class="info-item" style="color: #333;">
+                    <div class="info-item" style="color: #1b5e20;">
                         <span class="label">Selisih Cicilan:</span>
                         <span id="selisihCicilan" class="value">-</span>
                     </div>
-                    <div class="info-item" style="color: #333;">
+                    <div class="info-item" style="color: #1b5e20;">
                         <span class="label">Proporsi Pokok Baru:</span>
                         <span id="proporsiPokok" class="value">-</span>
                     </div>
-                    <div class="info-item" style="color: #333;">
+                    <div class="info-item" style="color: #1b5e20;">
                         <span class="label">Proporsi Bunga Baru:</span>
                         <span id="proporsiBunga" class="value">-</span>
                     </div>
@@ -270,8 +284,10 @@
             </div>
         </div>
     </div>
+    </section>
+    <!-- End Calculator Section -->
 
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 
 </html>
