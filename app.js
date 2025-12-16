@@ -6,7 +6,7 @@ let bulanDipilih = null;
 let riwayatPelunasan = [];
 let bungaAsli = {}; // Menyimpan bunga asli untuk setiap bulan
 let totalPembayaranAwal = 0; // Total pembayaran sebelum pelunasan
-let flagPelunasan = false;
+let flagPelunasan = true;
 
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize theme (dark/light mode)
