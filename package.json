@@ -12,6 +12,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "vite": "^7.2.7"
+    "vite": "^7.2.7",
+    "@types/bun": "latest"
+  },
+  "private": true,
+  "peerDependencies": {
+    "typescript": "^5"
   }
 }

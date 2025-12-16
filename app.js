@@ -6,6 +6,7 @@ let bulanDipilih = null;
 let riwayatPelunasan = [];
 let bungaAsli = {}; // Menyimpan bunga asli untuk setiap bulan
 let totalPembayaranAwal = 0; // Total pembayaran sebelum pelunasan
+let flagPelunasan = false;
 
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize theme (dark/light mode)
@@ -119,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
     inputFields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
-            field.addEventListener('input', function(e) {
+            field.addEventListener('input', function (e) {
                 let value = e.target.value.replace(/\./g, '');
                 if (value && !isNaN(value)) {
                     e.target.value = formatAngkaInput(parseInt(value));
@@ -488,7 +489,16 @@ function tampilkanHasil() {
 
     dataAngsuran.forEach((item, index) => {
         const row = document.createElement('tr');
-        const isDisabled = item.bulan <= bulanPelunasanTerakhir;
+
+        // Logic disable button berdasarkan flagPelunasan
+        let isDisabled;
+        if (flagPelunasan === false) {
+            // Jika flagPelunasan false: disable ALL buttons setelah pelunasan pertama
+            isDisabled = riwayatPelunasan.length > 0;
+        } else {
+            // Jika flagPelunasan true: hanya disable button sebelum pelunasan terakhir (behavior lama)
+            isDisabled = item.bulan <= bulanPelunasanTerakhir;
+        }
 
         row.innerHTML = `
             <td>${item.bulan}</td>
